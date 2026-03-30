@@ -1,8 +1,8 @@
+import 'dotenv/config'
 import express, {Application, Request, Response} from 'express'
-import dotenv from 'dotenv'
 import authRoutes from './routes/auth.routes'
 
-dotenv.config()
+
 
 const app: Application = express()
 const PORT = process.env.PORT || 3000
@@ -21,3 +21,5 @@ app.get('/health', (req: Request, res:Response)=>{
 app.listen(PORT, ()=>{
     console.log(`Server running on port ${PORT}`)
 })
+
+console.log('DATABASE_URL:', process.env.DATABASE_URL)
