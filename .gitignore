@@ -3,3 +3,4 @@ dist
 .env
 learning.png
 /src/generated/prisma
+.vscode
