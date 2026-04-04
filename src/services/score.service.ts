@@ -41,7 +41,7 @@ export const submitScore = async (userId: string, text: string) => {
   }
 
   const globalScore = Object.values(scores).reduce((sum, s) => sum + s, 0)
-  await redis.zincrby('leaderboard:global', globalScore, userId)
+  await redis.zincrby('leaderboard:global', globalScore, userId) //accumulation
 
   return scores
 }
