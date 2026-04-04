@@ -1,9 +1,25 @@
 import { Request, Response } from 'express'
-import { submitScore } from '../services/score.service'
+import { getLeaderboard, getUserRank } from '../services/leaderboard.service'
 
-export const submitScoreController = async (req: Request, res: Response) => {
+export const getLeaderboardController = async (req: Request, res: Response) => {
   try {
-    const { text } = req.body
+    const { category } = req.params
+
+    const leaderboard = await getLeaderboard(category)
+
+    res.status(200).json({
+      message: `Leaderboard for ${category}`,
+      data: leaderboard
+    })
+
+  } catch (error: any) {
+    res.status(400).json({ message: error.message })
+  }
+}
+
+export const getUserRankController = async (req: Request, res: Response) => {
+  try {
+    const { category } = req.params
     const userId = req.user?.userId
 
     if (!userId) {
@@ -11,19 +27,14 @@ export const submitScoreController = async (req: Request, res: Response) => {
       return
     }
 
-    if (!text || typeof text !== 'string' || text.trim().length === 0) {
-      res.status(400).json({ message: 'Text is required' })
-      return
-    }
+    const rankData = await getUserRank(userId, category)
 
-    const scores = await submitScore(userId, text)
-
-    res.status(201).json({
-      message: 'Score submitted successfully',
-      data: scores
+    res.status(200).json({
+      message: `Your rank in ${category}`,
+      data: rankData
     })
 
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(400).json({ message: error.message })
   }
 }
