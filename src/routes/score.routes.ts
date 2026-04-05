@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { submitScoreController } from '../controllers/leaderboard.controller'
+import { submitScoreController } from '../controllers/score.controller'
 
 import { authenticate } from '../middleware/auth.middleware'
 
