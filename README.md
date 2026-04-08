@@ -58,13 +58,6 @@ npm run dev
 
 **Report periods:** `7d` · `30d` · `1y`
 
-## Environment Variables
-
-```
-DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/leaderboard
-REDIS_URL=redis://localhost:6379
-JWT_SECRET=your-super-secret-jwt-key
-PORT=3000
 ```
 
 ## Notes
