@@ -1,6 +1,6 @@
 # Real-Time Leaderboard API
 
-A backend system that ranks users based on text analysis scores across multiple categories.
+A backend system that ranks users based on text analysis scores across multiple categories.  
 
 ## How it works
 
@@ -56,7 +56,8 @@ npm run dev
 
 **Categories:** `total_characters` · `uppercase` · `emojis` · `special_characters` · `global`
 
-**Report periods:** `7d` · `30d` · `1y`
+**Report periods:** `7d` · `30d` · `1y`  
+https://roadmap.sh/projects/realtime-leaderboard-system
 
 ```
 
