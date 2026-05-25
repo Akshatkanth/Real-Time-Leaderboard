@@ -57,3 +57,58 @@ export const getUserRank = async (userId: string, category: string) => {
     category
   }
 }
+
+export const getReport = async (period: string) => {
+  const periodMap: Record<string, number> = {
+    '7d': 7,
+    '30d': 30,
+    '1y': 365
+  }
+
+  const days = periodMap[period]
+  if (!days) {
+    throw new Error('Invalid period. Use: 7d, 30d, or 1y')
+  }
+
+  const since = new Date()
+  since.setDate(since.getDate() - days)
+
+  const categories = await prisma.category.findMany()
+
+  const report = await Promise.all(
+    categories.map(async (category) => {
+      const topPlayers = await prisma.score.groupBy({
+        by: ['userId'],
+        where: {
+          categoryId: category.id,
+          createdAt: { gte: since }
+        },
+        _sum: { value: true },
+        orderBy: { _sum: { value: 'desc' } },
+        take: 5
+      })
+
+      const enriched = await Promise.all(
+        topPlayers.map(async (entry, index) => {
+          const user = await prisma.user.findUnique({
+            where: { id: entry.userId },
+            select: { username: true }
+          })
+          return {
+            rank: index + 1,
+            username: user?.username || 'Unknown',
+            score: entry._sum.value || 0
+          }
+        })
+      )
+
+      return {
+        category: category.name,
+        period,
+        topPlayers: enriched
+      }
+    })
+  )
+
+  return report
+}

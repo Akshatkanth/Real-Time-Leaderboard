@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express, {Application, Request, Response} from 'express'
+import cors from 'cors'
 import authRoutes from './routes/auth.routes'
 import scoreRoutes from './routes/score.routes'
 import leaderboardRoutes from './routes/leaderboard.routes'
@@ -8,6 +9,7 @@ const app: Application = express()
 const PORT = process.env.PORT || 3000
 
 //middleware
+app.use(cors())
 app.use(express.json())
 
 app.use('/auth', authRoutes)
@@ -25,5 +27,4 @@ app.get('/health', (req: Request, res:Response)=>{
 app.listen(PORT, ()=>{
     console.log(`Server running on port ${PORT}`)
 })
-
-console.log('DATABASE_URL:', process.env.DATABASE_URL)
+

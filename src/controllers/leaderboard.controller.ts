@@ -3,7 +3,7 @@ import { getLeaderboard, getUserRank, getReport } from '../services/leaderboard.
 
 export const getLeaderboardController = async (req: Request, res: Response) => {
   try {
-    const { category } = req.params
+    const category = req.params.category as string
 
     const leaderboard = await getLeaderboard(category)
 
@@ -19,7 +19,7 @@ export const getLeaderboardController = async (req: Request, res: Response) => {
 
 export const getUserRankController = async (req: Request, res: Response) => {
   try {
-    const { category } = req.params
+    const category = req.params.category as string
     const userId = req.user?.userId
 
     if (!userId) {
