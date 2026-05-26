@@ -4,3 +4,4 @@ dist
 learning.png
 /src/generated/prisma
 .vscode
+run.ps1

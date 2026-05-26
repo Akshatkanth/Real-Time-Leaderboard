@@ -11,12 +11,12 @@ const AuthView = (() => {
         <div class="auth-card">
           <div class="auth-header">
             <div class="auth-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
               </svg>
             </div>
-            <h1 class="auth-title">Welcome</h1>
-            <p class="auth-subtitle">Sign in to compete on the leaderboard</p>
+            <h1 class="auth-title">${currentTab === 'login' ? 'Welcome Back' : 'Create Account'}</h1>
+            <p class="auth-subtitle">${currentTab === 'login' ? 'Sign in to compete on the leaderboard' : 'Join the real-time global network rankings'}</p>
           </div>
           <div class="auth-body">
             <div class="auth-tabs">
@@ -39,7 +39,7 @@ const AuthView = (() => {
                 <input class="form-input" id="auth-password" type="password" placeholder="••••••••" required autocomplete="${currentTab === 'register' ? 'new-password' : 'current-password'}" minlength="6" />
               </div>
               <div id="auth-error" class="error-text" style="display:none;"></div>
-              <button type="submit" class="btn btn-primary mt-2" id="auth-submit-btn">
+              <button type="submit" class="btn btn-primary" id="auth-submit-btn">
                 ${currentTab === 'login' ? 'Sign In' : 'Create Account'}
               </button>
             </form>

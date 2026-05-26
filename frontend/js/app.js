@@ -77,7 +77,7 @@ const App = (() => {
       `;
     } else {
       navUser.innerHTML = `
-        <button class="btn-logout" onclick="App.navigate('auth')" style="border-color: var(--accent-blue); color: var(--accent-blue);">Sign In</button>
+        <button class="btn" onclick="App.navigate('auth')">Sign In</button>
       `;
     }
 

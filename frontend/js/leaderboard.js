@@ -17,8 +17,8 @@ const LeaderboardView = (() => {
     return `
       <div class="view-enter">
         <div class="page-header">
-          <h1 class="page-title"><span class="gradient">Leaderboard</span></h1>
-          <p class="page-subtitle">Top 10 players ranked in real-time from Redis</p>
+          <h1 class="page-title"><span class="brand-text">Leaderboard</span></h1>
+          <p class="page-subtitle">Real-time Global Network Rankings</p>
         </div>
 
         <div class="category-tabs" id="leaderboard-tabs">
@@ -42,7 +42,12 @@ const LeaderboardView = (() => {
 
   function renderSkeletons() {
     return Array.from({ length: 5 }, () =>
-      `<div class="skeleton skeleton-row"></div>`
+      `<div class="leaderboard-row" style="opacity: 0.5; animation: none;">
+         <div class="rank-badge">-</div>
+         <div class="player-avatar skeleton"></div>
+         <div class="player-name" style="color:var(--text-muted)">Loading data...</div>
+         <div class="player-score">...</div>
+       </div>`
     ).join('');
   }
 
@@ -70,10 +75,11 @@ const LeaderboardView = (() => {
       content.innerHTML = `
         <div class="leaderboard-list">
           ${data.map((entry, i) => `
-            <div class="leaderboard-row" style="animation-delay: ${i * 60}ms">
+            <div class="leaderboard-row" style="animation: listPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 60}ms forwards; opacity: 0;">
               <div class="rank-badge ${i < 3 ? 'rank-' + (i + 1) : ''}">
                 ${i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + entry.rank}
               </div>
+              <div class="player-avatar">${entry.username.charAt(0).toUpperCase()}</div>
               <div class="player-name">${escapeHtml(entry.username)}</div>
               <div class="player-score">${entry.score.toLocaleString()}</div>
             </div>

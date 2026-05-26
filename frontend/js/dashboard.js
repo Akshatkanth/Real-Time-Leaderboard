@@ -20,7 +20,7 @@ const DashboardView = (() => {
     return `
       <div class="view-enter">
         <div class="page-header">
-          <h1 class="page-title">Hey, <span class="gradient">${user?.username || 'Player'}</span></h1>
+          <h1 class="page-title">Hey, <span class="brand-text">${user?.username || 'Player'}</span></h1>
           <p class="page-subtitle">Submit text to climb the leaderboard. Every character counts.</p>
         </div>
 
@@ -43,10 +43,10 @@ const DashboardView = (() => {
                 </div>
 
                 <div class="text-stats-bar" id="text-stats">
-                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--accent-blue)"></span> Characters: <strong id="preview-chars">0</strong></span>
-                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--accent-purple)"></span> Uppercase: <strong id="preview-upper">0</strong></span>
-                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--accent-amber)"></span> Emojis: <strong id="preview-emoji">0</strong></span>
-                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--accent-rose)"></span> Special: <strong id="preview-special">0</strong></span>
+                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--neon-cyan); color:var(--neon-cyan);"></span> Characters: <strong id="preview-chars">0</strong></span>
+                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--neon-purple); color:var(--neon-purple);"></span> Uppercase: <strong id="preview-upper">0</strong></span>
+                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--neon-orange); color:var(--neon-orange);"></span> Emojis: <strong id="preview-emoji">0</strong></span>
+                  <span class="text-stat"><span class="text-stat-dot" style="background:var(--neon-pink); color:var(--neon-pink);"></span> Special: <strong id="preview-special">0</strong></span>
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="submit-btn" style="margin-top:0.75rem;">
@@ -104,7 +104,7 @@ const DashboardView = (() => {
 
       const grid = document.getElementById('score-grid');
       grid.innerHTML = categories.map((cat, i) => `
-        <div class="score-card cat-${cat.key}" style="animation-delay: ${i * 80}ms">
+        <div class="score-card cat-${cat.key}" style="animation: scorePopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 80}ms forwards; opacity: 0;">
           <div class="score-value">${scores[cat.key]}</div>
           <div class="score-label">${cat.icon} ${cat.label}</div>
         </div>

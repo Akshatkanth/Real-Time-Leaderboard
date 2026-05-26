@@ -85,10 +85,11 @@ const ReportView = (() => {
             ? `<div class="empty-state" style="padding:1rem;"><div class="empty-state-sub">No scores in this period</div></div>`
             : `<div class="leaderboard-list">
                 ${section.topPlayers.map((player, i) => `
-                  <div class="leaderboard-row" style="animation-delay: ${i * 50}ms">
+                  <div class="leaderboard-row" style="animation: listPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 50}ms forwards; opacity: 0;">
                     <div class="rank-badge ${i < 3 ? 'rank-' + (i + 1) : ''}">
                       ${i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + player.rank}
                     </div>
+                    <div class="player-avatar">${player.username.charAt(0).toUpperCase()}</div>
                     <div class="player-name">${escapeHtml(player.username)}</div>
                     <div class="player-score">${player.score.toLocaleString()}</div>
                   </div>

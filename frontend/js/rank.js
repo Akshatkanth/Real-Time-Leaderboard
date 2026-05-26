@@ -19,7 +19,7 @@ const RankView = (() => {
           <p class="page-subtitle">See where you stand across every category</p>
         </div>
         <div class="rank-grid" id="rank-grid">
-          ${CATEGORIES.map(() => `<div class="skeleton skeleton-card"></div>`).join('')}
+          ${CATEGORIES.map(() => `<div class="rank-card skeleton" style="height: 190px; opacity: 0.5;"></div>`).join('')}
         </div>
       </div>
     `;
@@ -38,8 +38,8 @@ const RankView = (() => {
       if (result.status === 'fulfilled') {
         const data = result.value.data;
         return `
-          <div class="rank-card cat-${cat.key}" style="animation: scorePopIn var(--duration-slow) var(--ease-spring) ${i * 80}ms forwards; opacity: 0;">
-            <div class="rank-position text-gradient">#${data.rank}</div>
+          <div class="rank-card cat-${cat.key}" style="animation: scorePopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 80}ms forwards; opacity: 0;">
+            <div class="rank-position">#${data.rank}</div>
             <div class="rank-position-label">Rank</div>
             <div class="rank-category-name">${cat.icon} ${cat.label}</div>
             <div class="rank-score-value">Score: ${data.score.toLocaleString()}</div>
@@ -47,7 +47,7 @@ const RankView = (() => {
         `;
       } else {
         return `
-          <div class="rank-card cat-${cat.key}" style="animation: scorePopIn var(--duration-slow) var(--ease-spring) ${i * 80}ms forwards; opacity: 0;">
+          <div class="rank-card cat-${cat.key}" style="animation: scorePopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 80}ms forwards; opacity: 0;">
             <div class="rank-position" style="color: var(--text-muted);">—</div>
             <div class="rank-position-label">No Rank</div>
             <div class="rank-category-name">${cat.icon} ${cat.label}</div>
