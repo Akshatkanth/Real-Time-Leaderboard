@@ -1,16 +1,16 @@
-# render.yaml — Infrastructure as Code for Render
-# Deploy your backend, Postgres, and Redis with one click
-
 databases:
   - name: leaderboard-postgres
     plan: free
     databaseName: leaderboard
-    user: postgres
+    user: leaderboard_user
 
 services:
   - type: redis
     name: leaderboard-redis
     plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
     maxmemoryPolicy: allkeys-lru
 
   - type: web
