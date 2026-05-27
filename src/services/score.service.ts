@@ -8,6 +8,40 @@ interface TextScores {
   special_characters: number
 }
 
+const CATEGORY_DEFINITIONS: Array<{
+  name: keyof TextScores
+  description: string
+}> = [
+  {
+    name: 'total_characters',
+    description: 'Total number of characters in the submitted text'
+  },
+  {
+    name: 'uppercase',
+    description: 'Total number of uppercase letters in the submitted text'
+  },
+  {
+    name: 'emojis',
+    description: 'Total number of emojis in the submitted text'
+  },
+  {
+    name: 'special_characters',
+    description: 'Total number of special characters in the submitted text'
+  }
+]
+
+const ensureCategories = async () => {
+  await Promise.all(
+    CATEGORY_DEFINITIONS.map((category) =>
+      prisma.category.upsert({
+        where: { name: category.name },
+        update: {},
+        create: category
+      })
+    )
+  )
+}
+
 const analyzeText = (text: string): TextScores => {
   const emojiRegex = /\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu
   const specialCharRegex = /[^a-zA-Z0-9\s\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu
@@ -22,6 +56,8 @@ const analyzeText = (text: string): TextScores => {
 
 export const submitScore = async (userId: string, text: string) => {
   const scores = analyzeText(text)
+
+  await ensureCategories()
 
   const categories = await prisma.category.findMany()
 
