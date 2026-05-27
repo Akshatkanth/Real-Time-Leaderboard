@@ -1,6 +1,6 @@
 [build]
-  publish = "."
-  functions = "netlify/functions"
+  publish = "frontend"
+  functions = "frontend/netlify/functions"
 
 [build.environment]
   BACKEND_URL = "https://leaderboard-api-0ej6.onrender.com"
@@ -11,7 +11,6 @@
   status = 200
   force = true
 
-# SPA routing - redirect all paths to index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
