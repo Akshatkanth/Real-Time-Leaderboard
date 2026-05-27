@@ -4,6 +4,7 @@ import cors from 'cors'
 import authRoutes from './routes/auth.routes'
 import scoreRoutes from './routes/score.routes'
 import leaderboardRoutes from './routes/leaderboard.routes'
+import { rebuildLeaderboards } from './services/leaderboard.service'
 
 const app: Application = express()
 const PORT = process.env.PORT || 3000
@@ -24,7 +25,19 @@ app.get('/health', (req: Request, res:Response)=>{
 
 
 //start server
-app.listen(PORT, ()=>{
-    console.log(`Server running on port ${PORT}`)
-})
-
+const startServer = async () => {
+    try {
+        await rebuildLeaderboards()
+        app.listen(PORT, ()=>{
+            console.log(`Server running on port ${PORT}`)
+        })
+    } catch (error) {
+        console.error('Failed to rebuild leaderboards:', error)
+        app.listen(PORT, ()=>{
+            console.log(`Server running on port ${PORT}`)
+        })
+    }
+}
+
+startServer()
+

@@ -9,6 +9,71 @@ const VALID_CATEGORIES = [
   'global'
 ]
 
+const CATEGORY_NAMES = [
+  'total_characters',
+  'uppercase',
+  'emojis',
+  'special_characters'
+] as const
+
+const ensureCategories = async () => {
+  await Promise.all(
+    CATEGORY_NAMES.map((name) =>
+      prisma.category.upsert({
+        where: { name },
+        update: {},
+        create: {
+          name,
+          description: `Total number of ${name.replace(/_/g, ' ')} in the submitted text`
+        }
+      })
+    )
+  )
+}
+
+export const rebuildLeaderboards = async () => {
+  await ensureCategories()
+
+  const categories = await prisma.category.findMany()
+  const categoryById = new Map(categories.map((category) => [category.id, category.name]))
+
+  await redis.del(...VALID_CATEGORIES.map((category) => `leaderboard:${category}`))
+
+  const categoryScores = await prisma.score.groupBy({
+    by: ['categoryId', 'userId'],
+    _sum: { value: true }
+  })
+
+  const categoryEntries = categoryScores.filter((entry) => {
+    const categoryName = categoryById.get(entry.categoryId)
+    return !!categoryName && categoryName !== 'global'
+  })
+
+  await Promise.all(
+    categoryEntries.map(async (entry) => {
+      const categoryName = categoryById.get(entry.categoryId)
+      if (!categoryName) {
+        return
+      }
+
+      const score = entry._sum.value || 0
+      await redis.zincrby(`leaderboard:${categoryName}`, score, entry.userId)
+    })
+  )
+
+  const globalScores = await prisma.score.groupBy({
+    by: ['userId'],
+    _sum: { value: true }
+  })
+
+  await Promise.all(
+    globalScores.map(async (entry) => {
+      const score = entry._sum.value || 0
+      await redis.zincrby('leaderboard:global', score, entry.userId)
+    })
+  )
+}
+
 export const getLeaderboard = async (category: string) => {
   if (!VALID_CATEGORIES.includes(category)) {
     throw new Error(`Invalid category. Valid categories are: ${VALID_CATEGORIES.join(', ')}`)
